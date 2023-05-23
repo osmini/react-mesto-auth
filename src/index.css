@@ -4,10 +4,16 @@
 @import url(./blocks/animation-hover/animation-hover.css); /*анимация наведения*/
 @import url(./blocks/hover-batton/hover-batton.css); /*анимация наведения на кнопку сохранить*/
 @import url(./blocks/hover-like/hover-like.css); /*анимация наведения на кнопку лайк*/
+@import url(./blocks/aut-batton/aut-batton.css); /*анимация наведения на кнопку при регистрации/входе*/
+
 
 /*header*/
 @import url(./blocks/header/header.css);
   @import url(./blocks/header/__logo/header__logo.css); 
+  @import url(./blocks/header/__menu/header__menu.css); 
+    @import url(./blocks/header/__menu/__menu-login/header__menu-login.css); 
+    @import url(./blocks/header/__menu/__menu-link/header__menu-link.css); 
+
 
 /*profile*/
 @import url(./blocks/profile/profile.css);
@@ -54,3 +60,13 @@
   @import url(./blocks/popup/__close-button/_rigth/popup__close-button_rigth.css);
   @import url(./blocks/popup/__input/_error/popup__input_error-border.css);
   @import url(./blocks/popup/__input-error/_active/popup__input-error_error_active.css);
+  @import url(./blocks/popup/__infotooltip-image/popup__infotooltip-image.css);
+  @import url(./blocks/popup/__infotooltip-message/popup__infotooltip-message.css);
+
+/*aut*/
+@import url(./blocks/aut/aut.css);
+  @import url(./blocks/aut/__title/aut__title.css);
+  @import url(./blocks/aut/__form/aut__form.css);
+    @import url(./blocks/aut/__form/__form-input/aut__form-input.css);
+    @import url(./blocks/aut/__form/__form-button/aut__form-button.css);
+    @import url(./blocks/aut/__form/__form-link/aut__form-link.css);

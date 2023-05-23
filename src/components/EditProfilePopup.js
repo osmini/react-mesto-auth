@@ -11,7 +11,7 @@ function EditProfilePopup(props){
   const [name, setName] = useState('');
   const [description , setDescription] = useState('');
 
-  // Подписываемся на контекст TranslationContext  {isOwn && 
+  // Подписываемся на контекст TranslationContext 
   const currentUser = useContext(CurrentUserContext);
 
   // изменение имени из формы
