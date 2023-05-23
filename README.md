@@ -7,4 +7,3 @@
 * JS
 * React
 
-* [Ссылка на готовый проект](https://osmini.github.io/react-mesto-auth/)
