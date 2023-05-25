@@ -3,7 +3,7 @@ import union2 from '../images/Union2.svg';
 
 function InfoTooltip(props){
 
-  const{ onClose, tooltipPopupOpen, registrIn} = props;
+  const{ onClose, tooltipPopupOpen, registrIn, regAnsve} = props;
 
   return (
     <section className= {!tooltipPopupOpen ? ("popup") : ("popup popup_active")} aria-label="форма попапа">
@@ -14,7 +14,7 @@ function InfoTooltip(props){
         <img src={registrIn ? union : union2} alt={registrIn ? ('Регистрация прошла успешно.') : ('Регистрация не прошла.')} className='popup__infotooltip-image'/>
         
           <p className='popup__infotooltip-message'>
-            {registrIn ? ('Вы успешно зарегистрировались!') : ('Что-то прошло не так! Попробуйте ещё раз.')}
+            {regAnsve}
           </p>
       </div>
     </section>

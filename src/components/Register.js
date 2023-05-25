@@ -9,7 +9,6 @@ function Register(props){
   // данные из формы регистрации
   const [registerName, setRegisterName] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
-
   
   // изменение имени из формы
   function handleName(evt){

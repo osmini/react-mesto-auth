@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import { Routes, Route, useNavigate, useLocation} from 'react-router-dom'; // импортируем Routes
+import { Routes, Route, useNavigate, useLocation, Link} from 'react-router-dom'; // импортируем Routes
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -14,10 +14,8 @@ import Api from '../utils/Api';
 import ApiAuth from '../utils/ApiAuth';
 import ProtectedRoute from "./ProtectedRoute"; // импортируем HOC
 
-
 // Импортируем объект контекста
 import CurrentUserContext from './../contexts/CurrentUserContext';
-
 
 function App() {
 
@@ -33,10 +31,11 @@ function App() {
   const [loggenIn, setLoggenIn] = useState(null); // стейт логина
   const [registrIn, setRegistrIn] = useState(false); // стейт регистрации
   const [userData, setUserData] = useState(''); // стейт информации о пользователе
+  const [isPageLoading, setIsPageLoading] = useState(true); // стейт отвечающий за состояние загрузки страницы
+  const [regAnsve, setRegAnsve] = useState(''); // стейт сообщения в попап регистрации
 
   const navigate = useNavigate();
   const location = useLocation();
-
 
   function handleEditProfileClick(){
     setleEditProfileClick(true);
@@ -54,7 +53,6 @@ function App() {
     setTooltipPopupOpen(result.popup);
     setRegistrIn(result.registr)
   }
-
 
   function handleCardClick (selectedCard){
     setSelectedCard(selectedCard);
@@ -86,28 +84,32 @@ function App() {
     }
   }, [isOpen]) 
 
-
   // запрос пользователя с сервера
   useEffect(()=>{
-    Api.getInfoUserForServer()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  }, []);
+    if (localStorage.getItem('jwt')){
+      Api.getInfoUserForServer()
+        .then((res) => {
+          setCurrentUser(res);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+  }}, []);
+    
 
   // запрос карточек с сервера
   useEffect(()=>{
-    Api.getCardsForServer()
-      .then((res) => {
-        setCards(res);
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  }, []);
+    if (localStorage.getItem('jwt')){
+      Api.getCardsForServer()
+        .then((res) => {
+          setCards(res);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() =>
+         setIsPageLoading(false)); // завершаем загрузку 
+  }}, []);
 
   // поставить, убрать лайк
   function handleCardLike(card) {
@@ -205,6 +207,7 @@ function App() {
       };
       handleTooltipPopupOpen(result);
       navigate('/sign-in');
+      setRegAnsve('Вы успешно зарегистрировались!');
     })
     .catch(() => {
       const result = {
@@ -212,6 +215,7 @@ function App() {
         registr: false
       };
       handleTooltipPopupOpen(result);
+      setRegAnsve('Что-то прошло не так! Попробуйте ещё раз.');
     })
   }
 
@@ -222,7 +226,7 @@ function App() {
       localStorage.setItem('jwt', data.token);
       setLoggenIn(true);
       setUserData(registerName);
-      navigate('/mesto-react');
+      navigate('/');
     })
     .catch(() => {
       const result = {
@@ -246,33 +250,43 @@ function App() {
         setLoggenIn(false);
       }
     })
+    .catch((err) => {
+      console.error(err);
+    })
   }, []);
 
-  /*// прием показывающий что страница перезагружается, а не просто страница "дергается при перерисовки"
-    // у меня не вышло, при такой записи когда ключь пустой, тгогда вообще не пускает на авторизацию
-  if (loggenIn === null) {
-    return (<div>Loading...</div>);
-  }*/
+  // обработчик выхода из профиля
+  function onSignOut(){
+    localStorage.removeItem('jwt');
+  }
 
   return (
 
     <CurrentUserContext.Provider value={currentUser}>
     
-      <Header userData={userData} />
+      <Header userData={userData} onSignOut={onSignOut}/>
 
         <Routes>
 
-          <Route path="/mesto-react" element={
-            <ProtectedRoute element={
-              <Main 
-                onEditProfile = {handleEditProfileClick}
-                onEditAvatar = {handleEditAvatarClick} 
-                onAddPlace = {handleAddPlaceClick}  
-                onCardClick = {handleCardClick}
-                onCardLike = {handleCardLike}
-                onCardDelete = {handleCardDelete}
-                cards = {cards}
-              />} 
+          <Route path="/" element={
+
+            <ProtectedRoute 
+              // прием показывающий что страница перезагружается, а не просто страница "дергается при перерисовки"
+              element={
+                isPageLoading ? (
+                  <div>Loading...</div>
+                ) : (
+                  <Main 
+                    onEditProfile = {handleEditProfileClick}
+                    onEditAvatar = {handleEditAvatarClick} 
+                    onAddPlace = {handleAddPlaceClick}  
+                    onCardClick = {handleCardClick}
+                    onCardLike = {handleCardLike}
+                    onCardDelete = {handleCardDelete}
+                    cards = {cards}
+                  />
+                )
+              } 
               loggenIn={loggenIn} 
             />
           }/>
@@ -295,7 +309,8 @@ function App() {
             />
           }/>
 
-        <Route path="*" element= {<h2> Not found</h2>}/>
+        <Route path="*" element= {
+          <h2 className="notPage"> Not found<Link to="/" > На главную страницу </Link></h2>  }/>
 
       </Routes>
               
@@ -303,7 +318,7 @@ function App() {
       <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} isLoading={isLoading}/>
       <AddPlacePopup  isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} isLoading={isLoading}/>
       <ImagePopup card = {selectedCard} onClose = {() => closeAllPopups()}/> 
-      <InfoTooltip isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} tooltipPopupOpen={tooltipPopupOpen} registrIn={registrIn}/> 
+      <InfoTooltip isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} tooltipPopupOpen={tooltipPopupOpen} registrIn={registrIn} regAnsve={regAnsve}/> 
       <Footer />  
 
     </CurrentUserContext.Provider>

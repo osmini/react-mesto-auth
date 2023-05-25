@@ -1,7 +1,6 @@
 import PopupWithForm  from './PopupWithForm';
 import {useEffect, useState} from 'react';
 
-
 function AddPlacePopup (props){
 
   const{onAddPlace, isOpen, onClose, isLoading} = props;

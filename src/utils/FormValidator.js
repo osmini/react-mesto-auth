@@ -6,7 +6,6 @@ export class FormValidator {
     this._hoverButton = setings.hoverButton;
     this._inputErrorBorder = setings.inputErrorBorder;
     this._errorClass = setings.errorClass;
-
     this._validForm = validForm;
   }
 

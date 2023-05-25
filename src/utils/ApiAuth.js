@@ -57,7 +57,6 @@ class ApiAuth {
       return this._checkResponse(res);
       })
   };
-
 }
 
 const apiAuth = new ApiAuth({ 
@@ -67,6 +66,5 @@ const apiAuth = new ApiAuth({
     'Content-Type': 'application/json'
   }
 });
-
 
 export default apiAuth;

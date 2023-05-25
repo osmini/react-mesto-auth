@@ -70,3 +70,6 @@
     @import url(./blocks/aut/__form/__form-input/aut__form-input.css);
     @import url(./blocks/aut/__form/__form-button/aut__form-button.css);
     @import url(./blocks/aut/__form/__form-link/aut__form-link.css);
+
+/*notPage*/    
+@import url(./blocks/notPage/notPage.css);

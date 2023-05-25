@@ -42,7 +42,6 @@ function EditProfilePopup(props){
     setDescription(currentUser.about);
   }, [currentUser, isOpen]); 
 
-
   return(
     <PopupWithForm 
       onClose = {onClose} 

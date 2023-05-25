@@ -1,7 +1,6 @@
 import PopupWithForm  from './PopupWithForm';
 import {useEffect, useRef} from 'react';
 
-
 function EditAvatarPopup(props){
 
   const{onUpdateAvatar, isOpen, onClose, isLoading} = props;

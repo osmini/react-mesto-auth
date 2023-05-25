@@ -4,26 +4,19 @@ import {useContext} from 'react';
 // Импортируем объект контекста
 import CurrentUserContext from './../contexts/CurrentUserContext';
 
-
 // компонент принимат props
 function Card(props){
 
   const {name, likes, link, owner} = props.card;
 
-
-
   // Подписываемся на контекст TranslationContext  {isOwn && 
   const currentUser = useContext(CurrentUserContext);
 
-
   const isOwn = owner._id === currentUser._id;
-
 
   const cardDellButtonClassName = ( 
     `plases-card__del animation-hover ${!isOwn && 'plases-card__del_opasiti'}` 
   );
-
-
 
   // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
   const isLiked = likes.some(i => i._id === currentUser._id);

@@ -4,7 +4,6 @@ import Card  from './Card';
 // Импортируем объект контекста
 import CurrentUserContext from './../contexts/CurrentUserContext';
 
-
 function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardLike, onCardDelete, cards }){
 
   // Подписываемся на контекст TranslationContext
