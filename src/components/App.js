@@ -86,7 +86,7 @@ function App() {
 
   // запрос пользователя с сервера
   useEffect(()=>{
-    if (localStorage.getItem('jwt')){
+    if (loggenIn){
       Api.getInfoUserForServer()
         .then((res) => {
           setCurrentUser(res);
@@ -94,12 +94,11 @@ function App() {
         .catch(err => {
           console.log(err);
         })
-  }}, []);
+  }}, [loggenIn]);
     
-
   // запрос карточек с сервера
   useEffect(()=>{
-    if (localStorage.getItem('jwt')){
+    if (loggenIn){
       Api.getCardsForServer()
         .then((res) => {
           setCards(res);
@@ -109,7 +108,7 @@ function App() {
         })
         .finally(() =>
          setIsPageLoading(false)); // завершаем загрузку 
-  }}, []);
+  }}, [loggenIn]);
 
   // поставить, убрать лайк
   function handleCardLike(card) {
@@ -310,7 +309,11 @@ function App() {
           }/>
 
         <Route path="*" element= {
-          <h2 className="notPage"> Not found<Link to="/" > На главную страницу </Link></h2>  }/>
+          <>
+            <h2 className="notPage"> Not found</h2> 
+            <Link to="/" className="notPage__link animation-hover"> На главную страницу </Link>
+          </>
+        }/>
 
       </Routes>
               
